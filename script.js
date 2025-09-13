@@ -274,21 +274,26 @@ const form = document.getElementById("contactForm");
 const status = document.getElementById("formStatus");
 
 form.addEventListener("submit", async function (event) {
-  event.preventDefault(); // stop default page reload
+  event.preventDefault();
 
   const formData = new FormData(form);
 
-  const response = await fetch(form.action, {
-    method: form.method,
-    body: formData,
-    headers: { Accept: "application/json" },
-  });
+  try {
+    const response = await fetch(form.action, {
+      method: form.method,
+      body: formData,
+      headers: { Accept: "application/json" },
+    });
 
-  if (response.ok) {
-    status.style.display = "block";
-    status.textContent = "✅ Message Sent Successfully!";
-    form.reset(); // clear the form
-  } else {
+    if (response.ok) {
+      status.style.display = "block";
+      status.style.color = "green";
+      status.textContent = "✅ Message Sent Successfully!";
+      form.reset();
+    } else {
+      throw new Error("Network response not ok");
+    }
+  } catch (error) {
     status.style.display = "block";
     status.style.color = "red";
     status.textContent = "❌ Oops! Something went wrong. Please try again.";
