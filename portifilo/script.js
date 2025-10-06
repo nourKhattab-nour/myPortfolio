@@ -74,10 +74,12 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     const targetId = this.getAttribute("href");
     const targetElement = document.querySelector(targetId);
 
-    window.scrollTo({
-      top: targetElement.offsetTop - 70,
-      behavior: "smooth",
-    });
+    if (targetElement) {
+      window.scrollTo({
+        top: targetElement.offsetTop - 70,
+        behavior: "smooth",
+      });
+    }
   });
 });
 
@@ -87,115 +89,14 @@ const skillBars = document.querySelectorAll(".progress");
 function animateSkills() {
   skillBars.forEach((skill) => {
     const width = skill.getAttribute("data-width");
-    skill.style.width = "0";
-    setTimeout(() => {
-      skill.style.width = width;
-    }, 100);
-  });
-}
-
-// Projects filter functionality
-const filterButtons = document.querySelectorAll(".filter-btn");
-const projectItems = document.querySelectorAll(".project-item");
-
-filterButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    // Remove active class from all buttons
-    filterButtons.forEach((btn) => btn.classList.remove("active"));
-    // Add active class to clicked button
-    button.classList.add("active");
-
-    const filter = button.getAttribute("data-filter");
-
-    projectItems.forEach((item) => {
-      item.style.opacity = "0";
-      item.style.transform = "translateY(30px)";
-
+    if (width) {
+      skill.style.width = "0";
       setTimeout(() => {
-        if (filter === "all") {
-          item.style.display = "block";
-          setTimeout(() => {
-            item.classList.add("show");
-          }, 100);
-        } else {
-          // Check if item has the selected category
-          const categories = item.getAttribute("data-category").split(" ");
-          if (categories.includes(filter)) {
-            item.style.display = "block";
-            setTimeout(() => {
-              item.classList.add("show");
-            }, 100);
-          } else {
-            item.classList.remove("show");
-            item.style.display = "none";
-          }
-        }
-      }, 300);
-    });
-  });
-});
-
-// Animate projects when they come into view
-function animateProjects() {
-  const projectItems = document.querySelectorAll(".project-item");
-
-  projectItems.forEach((item, index) => {
-    const itemPosition = item.getBoundingClientRect().top;
-    const screenPosition = window.innerHeight / 1.3;
-
-    if (itemPosition < screenPosition) {
-      setTimeout(() => {
-        item.classList.add("show");
-      }, index * 100);
+        skill.style.width = width;
+      }, 100);
     }
   });
 }
-
-// Contact form submission
-const contactForm = document.getElementById("contactForm");
-
-contactForm.addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  // Get form values
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const subject = document.getElementById("subject").value;
-  const message = document.getElementById("message").value;
-
-  // Create success message
-  const successMsg = document.createElement("div");
-  successMsg.className = "success-message";
-  successMsg.textContent = "Message sent successfully!";
-  document.body.appendChild(successMsg);
-
-  // Show the message
-  setTimeout(() => {
-    successMsg.classList.add("show");
-  }, 100);
-
-  // Hide and remove the message
-  setTimeout(() => {
-    successMsg.classList.remove("show");
-    setTimeout(() => {
-      document.body.removeChild(successMsg);
-    }, 500);
-  }, 3000);
-
-  // Reset form
-  contactForm.reset();
-});
-
-// Initialize animations on load
-window.addEventListener("load", () => {
-  animateSkills();
-  animateProjects();
-});
-
-// Animate on scroll
-window.addEventListener("scroll", () => {
-  animateProjects();
-});
 
 // Add CSS animation for nav links
 const style = document.createElement("style");
@@ -213,10 +114,10 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Projects filter functionality
+// Projects filter functionality - FIXED VERSION
 document.addEventListener("DOMContentLoaded", function () {
   const filterButtons = document.querySelectorAll(".filter-btn");
-  const projectItems = document.querySelectorAll(".project-item");
+  const projectCards = document.querySelectorAll(".card[data-category]"); // Changed to select cards with data-category
 
   // Add click event listener to each filter button
   filterButtons.forEach((button) => {
@@ -231,32 +132,34 @@ document.addEventListener("DOMContentLoaded", function () {
       const filterValue = this.getAttribute("data-filter");
 
       // Filter projects based on selected category
-      projectItems.forEach((item) => {
-        const categories = item.getAttribute("data-category").split(" ");
+      projectCards.forEach((card) => {
+        const category = card.getAttribute("data-category");
 
         // Check if project matches the filter or if filter is 'all'
-        if (filterValue === "all" || categories.includes(filterValue)) {
-          // Show the project with animation
-          item.style.opacity = "0";
-          item.style.transform = "translateY(30px)";
-          item.style.display = "block";
+        if (filterValue === "all" || category === filterValue) {
+          // Show the card with animation
+          card.style.opacity = "0";
+          card.style.transform = "scale(0.8)";
+          card.style.display = "block";
 
           // Trigger reflow
-          void item.offsetWidth;
+          void card.offsetWidth;
 
           // Animate in
           setTimeout(() => {
-            item.style.opacity = "1";
-            item.style.transform = "translateY(0)";
+            card.style.opacity = "1";
+            card.style.transform = "scale(1)";
+            card.style.transition = "all 0.3s ease";
           }, 50);
         } else {
-          // Hide the project
-          item.style.opacity = "0";
-          item.style.transform = "translateY(30px)";
+          // Hide the card
+          card.style.opacity = "0";
+          card.style.transform = "scale(0.8)";
+          card.style.transition = "all 0.3s ease";
 
           // Hide after animation completes
           setTimeout(() => {
-            item.style.display = "none";
+            card.style.display = "none";
           }, 300);
         }
       });
@@ -270,32 +173,50 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+// Contact form submission with Formspree
 const form = document.getElementById("contactForm");
 const status = document.getElementById("formStatus");
 
-form.addEventListener("submit", async function (event) {
-  event.preventDefault();
+if (form && status) {
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
 
-  const formData = new FormData(form);
+    const formData = new FormData(form);
 
-  try {
-    const response = await fetch(form.action, {
-      method: form.method,
-      body: formData,
-      headers: { Accept: "application/json" },
-    });
+    try {
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: { Accept: "application/json" },
+      });
 
-    if (response.ok) {
+      if (response.ok) {
+        status.style.display = "block";
+        status.style.color = "green";
+        status.textContent = "✅ Message Sent Successfully!";
+        form.reset();
+
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          status.style.display = "none";
+        }, 5000);
+      } else {
+        throw new Error("Network response not ok");
+      }
+    } catch (error) {
       status.style.display = "block";
-      status.style.color = "green";
-      status.textContent = "✅ Message Sent Successfully!";
-      form.reset();
-    } else {
-      throw new Error("Network response not ok");
+      status.style.color = "red";
+      status.textContent = "❌ Oops! Something went wrong. Please try again.";
+
+      // Hide error message after 5 seconds
+      setTimeout(() => {
+        status.style.display = "none";
+      }, 5000);
     }
-  } catch (error) {
-    status.style.display = "block";
-    status.style.color = "red";
-    status.textContent = "❌ Oops! Something went wrong. Please try again.";
-  }
+  });
+}
+
+// Initialize animations on load
+window.addEventListener("load", () => {
+  animateSkills();
 });

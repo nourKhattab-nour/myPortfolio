@@ -413,42 +413,42 @@ a:hover {
 
 /* Additional skill icons */
 .skill-card .fab.fa-github {
-  color: #333;
+  color: #e7bc6e;
 }
 
 .skill-card .fab.fa-jira {
-  color: black;
+  color: #e7bc6e;
 }
 
 .skill-card .fab.fa-flutter {
-  color: black;
+  color: #e7bc6e;
 }
 
 .skill-card .fab.fa-python {
-  color: black;
+  color: #e7bc6e;
 }
 
 .skill-card .fab.fa-java {
-  color: black;
+  color: #e7bc6e;
 }
 
 .skill-card .fab.fa-php {
-  color: black;
+  color: #e7bc6e;
 }
 
 .skill-card .fab.fa-laravel {
-  color: black;
+  color: #e7bc6e;
 }
 
 .skill-card .fas.fa-puzzle-piece {
-  color: black;
+  color: #e7bc6e;
 }
 
 .skill-card .fab {
-  color: black;
+  color: #e7bc6e;
 }
 .skill-card .fas {
-  color: black;
+  color: #e7bc6e;
 }
 /* Progress bars for all skills */
 .progress-bar {
@@ -591,7 +591,7 @@ a:hover {
 }
 
 .timeline::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 20px;
   top: 0;
@@ -646,7 +646,7 @@ a:hover {
 }
 
 .timeline-list li::before {
-  content: '▹';
+  content: "▹";
   color: var(--primary-color);
   position: absolute;
   left: 0;
@@ -829,6 +829,7 @@ a:hover {
     grid-template-columns: 1fr;
   }
 }
+
 /* Contact Section */
 .contact {
   padding: 100px 0;
@@ -1047,6 +1048,7 @@ footer {
 
   .burger {
     display: block;
+    margin-right: 31px;
   }
 
   .burger.open .line1 {
@@ -1096,16 +1098,12 @@ footer {
   }
 
   .theme-toggle {
-    top: 15px;
+    top: 36px;
     right: 15px;
     width: 40px;
     height: 40px;
     font-size: 1rem;
   }
-
-
-
-
 }
 
 @media (max-width: 576px) {
@@ -1137,28 +1135,28 @@ footer {
     flex-direction: column;
     padding-top: 120px;
   }
-  
+
   .container-hero {
     flex-direction: column;
   }
-  
+
   .hero-content {
     order: 1;
     text-align: center;
     margin-top: 20px;
     margin-bottom: 40px;
   }
-  
+
   .hero-image {
     order: 2;
     margin-top: 0;
   }
-  
+
   .cta-buttons {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .btn-secondary {
     margin-left: 0;
     margin-top: 15px;
@@ -1170,18 +1168,18 @@ footer {
   .hero {
     flex-direction: column;
   }
-  
+
   .container-hero {
     flex-direction: column;
   }
-  
+
   .hero-content {
     order: 1;
     text-align: center;
     margin-top: 20px;
     margin-bottom: 40px;
   }
-  
+
   .hero-image {
     order: 2;
   }
